@@ -1,6 +1,5 @@
 /// <reference types="Cypress" />
 
-
 describe('Central de Atendimento ao Cliente TAT', function() {
 
     beforeEach(function() {
@@ -259,5 +258,20 @@ describe('Central de Atendimento ao Cliente TAT', function() {
                 .should('have.value', longText)
         })
 
-        
+        it('Faz uma requisição HTTP', () => {
+            cy.request('https://cac-tat.s3.eu-central-1.amazonaws.com/index.html')
+                .should((response) => {
+                    const { status, statusText, body } = response
+                    //console.log(response)
+                    expect(response.status).to.equal(200)
+                    expect(response.statusText).to.equal('OK')
+                    expect(response.body).include('CAC TAT')
+                })
+        })
+
+        it.only('Encontra o gato', () => {
+            cy.get('#cat').as('gatinho')
+                .invoke('show')
+                .should('be.visible')
+        })
 })
